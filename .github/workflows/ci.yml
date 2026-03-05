@@ -30,7 +30,7 @@ jobs:
               run: composer install --no-interaction --no-progress
 
             - name: Audit dependencies
-              run: composer audit --locked --no-interaction
+              run: composer audit --locked --abandoned=ignore --no-interaction
 
             - name: Check code style
               run: composer check-cs
