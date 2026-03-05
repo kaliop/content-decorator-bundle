@@ -14,8 +14,7 @@ class InjectorCollection
      */
     public function __construct(
         private readonly iterable $injectors
-    ) {
-    }
+    ) {}
 
     public function injectDependencies(ContentDecorator $contentDecorator): void
     {

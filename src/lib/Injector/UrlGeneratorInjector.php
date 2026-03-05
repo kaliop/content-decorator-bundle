@@ -13,8 +13,7 @@ class UrlGeneratorInjector implements InjectorInterface
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-    ) {
-    }
+    ) {}
 
     public function inject(ContentDecorator $contentDecorator): void
     {

@@ -11,6 +11,7 @@ use Ibexa\Contracts\Core\Repository\Values\Content\Location;
 use Ibexa\Contracts\Core\Variation\Values\ImageVariation;
 use Ibexa\Core\FieldType\Author\AuthorCollection;
 use Ibexa\Core\FieldType\Author\Value as AuthorValue;
+use Ibexa\Core\FieldType\BinaryFile\Value;
 use Ibexa\Core\FieldType\BinaryFile\Value as BinaryFileValue;
 use Ibexa\Core\FieldType\Checkbox\Value as CheckboxValue;
 use Ibexa\Core\FieldType\Country\Value as CountryValue;
@@ -56,13 +57,15 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     use ManagerAwareTrait;
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Location|null $rootLocation
+     * @param Location|null $rootLocation
      * @param string[]|null $prioritizedLanguages
      *
-     * @return iterable<\Ibexa\Contracts\Core\Repository\Values\Content\Location>
+     * @return iterable<Location>
      */
-    public function getLocations(?Location $rootLocation = null, ?array $prioritizedLanguages = null): iterable
-    {
+    public function getLocations(
+        ?Location $rootLocation = null,
+        ?array $prioritizedLanguages = null
+    ): iterable {
         return $this->repository->getLocationService()->loadLocations(
             $this->getContent()->getContentInfo(),
             $rootLocation,
@@ -83,9 +86,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \Ibexa\Core\FieldType\Author\AuthorCollection
+     * @return AuthorCollection
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getAuthorFieldValue(string $field): AuthorCollection
     {
@@ -100,9 +103,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \Ibexa\Core\FieldType\BinaryFile\Value
+     * @return Value
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getBinaryFileFieldValue(string $field): BinaryFileValue
     {
@@ -119,7 +122,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return bool
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getCheckboxFieldValue(string $field): bool
     {
@@ -136,7 +139,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return array<string, array{Name: string, Alpha2: string, Alpha3: string, IDC: int}>
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getCountryFieldValue(string $field): array
     {
@@ -154,9 +157,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \DateTime|null
+     * @return DateTime|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getDateFieldValue(string $field): ?DateTime
     {
@@ -171,9 +174,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \DateTime|null
+     * @return DateTime|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getDateTimeFieldValue(string $field): ?DateTime
     {
@@ -190,7 +193,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return string|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getEmailFieldValue(string $field): ?string
     {
@@ -207,7 +210,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return float|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getFloatFieldValue(string $field): ?float
     {
@@ -222,9 +225,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \Ibexa\Core\FieldType\Image\Value
+     * @return ImageValue
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getImageFieldValue(string $field): ImageValue
     {
@@ -240,12 +243,14 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      * @param string $field
      * @param string $variationName
      *
-     * @return \Ibexa\Contracts\Core\Variation\Values\ImageVariation
+     * @return ImageVariation
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    protected function getImageFieldVariation(string $field, string $variationName = 'original'): ImageVariation
-    {
+    protected function getImageFieldVariation(
+        string $field,
+        string $variationName = 'original'
+    ): ImageVariation {
         $field = $this->getContent()->getField($field);
         if ($field?->getValue() instanceof ImageValue) {
             $variation = $this->imageVariationService->getVariation($field, $this->getContent()->getVersionInfo(), $variationName);
@@ -260,9 +265,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator|null
+     * @return ContentDecorator|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getImageAssetFieldValue(string $field): ?ContentDecorator
     {
@@ -288,7 +293,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return int|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getIntegerFieldValue(string $field): ?int
     {
@@ -305,7 +310,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return string|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getISBNFieldValue(string $field): ?string
     {
@@ -322,7 +327,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return string[]
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getKeywordFieldValue(string $field): array
     {
@@ -337,9 +342,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \Ibexa\Core\FieldType\MapLocation\Value
+     * @return MapLocationValue
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getMapLocationFieldValue(string $field): MapLocationValue
     {
@@ -354,9 +359,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \Ibexa\Core\FieldType\Media\Value
+     * @return MediaValue
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getMediaFieldValue(string $field): MediaValue
     {
@@ -371,9 +376,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator|null
+     * @return ContentDecorator|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getRelationFieldValue(string $field): ?ContentDecorator
     {
@@ -397,10 +402,10 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator[]
+     * @return ContentDecorator[]
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
-     * @throws \Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException
+     * @throws InvalidArgumentException
+     * @throws ContentDecoratorException
      */
     protected function getRelationListFieldValue(string $field): array
     {
@@ -427,7 +432,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return array<int, string>   Keys are selection option identifiers and values are option names.
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getSelectionFieldValue(string $field): array
     {
@@ -454,7 +459,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return string|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getTextBlockFieldValue(string $field): ?string
     {
@@ -471,7 +476,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return string|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getTextLineFieldValue(string $field): ?string
     {
@@ -488,7 +493,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      *
      * @return int|null
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getTimeFieldValue(string $field): ?int
     {
@@ -503,9 +508,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \Ibexa\Core\FieldType\Url\Value
+     * @return UrlValue
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getUrlFieldValue(string $field): UrlValue
     {
@@ -520,9 +525,9 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
     /**
      * @param string $field
      *
-     * @return \Ibexa\Core\FieldType\User\Value
+     * @return UserValue
      *
-     * @throws \Ibexa\Contracts\Core\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function getUserFieldValue(string $field): UserValue
     {

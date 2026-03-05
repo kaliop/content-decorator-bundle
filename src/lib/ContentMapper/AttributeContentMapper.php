@@ -17,8 +17,10 @@ class AttributeContentMapper extends AbstractContentIdentifierMapper implements 
      */
     private array $classes = [];
 
-    public function __construct(string $namespace, string $directory)
-    {
+    public function __construct(
+        string $namespace,
+        string $directory
+    ) {
         $finder = new Finder();
         $finder->files()->in($directory)->name('*.php');
 

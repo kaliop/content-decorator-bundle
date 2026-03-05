@@ -13,8 +13,7 @@ class IbexaRepositoryInjector implements InjectorInterface
 {
     public function __construct(
         private Repository $repository,
-    ) {
-    }
+    ) {}
 
     public function inject(ContentDecorator $contentDecorator): void
     {

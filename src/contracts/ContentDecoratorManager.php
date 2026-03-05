@@ -6,6 +6,8 @@ namespace Kaliop\Contracts\ContentDecorator;
 
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\Content\Location;
+use Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException;
+use Kaliop\Contracts\ContentDecorator\Exception\InvalidContentDecoratorRepositoryException;
 use Kaliop\Contracts\ContentDecorator\Model\ContentDecorator;
 use Kaliop\Contracts\ContentDecorator\Repository\RepositoryInterface;
 
@@ -14,22 +16,22 @@ interface ContentDecoratorManager
     /**
      * Decorate given Content or Location.
      *
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Content|\Ibexa\Contracts\Core\Repository\Values\Content\Location $object
+     * @param Content|Location $object
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator
+     * @return ContentDecorator
      *
-     * @throws \Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException
+     * @throws ContentDecoratorException
      */
     public function decorate(Content|Location $object): ContentDecorator;
 
     /**
      * Decorate a given list of Content and/or Location objects.
      *
-     * @param list<\Ibexa\Contracts\Core\Repository\Values\Content\Content|\Ibexa\Contracts\Core\Repository\Values\Content\Location> $objects
+     * @param list<Content|Location> $objects
      *
-     * @return array<\Kaliop\Contracts\ContentDecorator\Model\ContentDecorator>
+     * @return array<ContentDecorator>
      *
-     * @throws \Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException
+     * @throws ContentDecoratorException
      */
     public function decorateMultiple(array $objects): array;
 
@@ -42,11 +44,16 @@ interface ContentDecoratorManager
      * @param int|null $versionNo
      * @param bool $useAlwaysAvailable
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator
+     * @return ContentDecorator
      *
-     * @throws \Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException
+     * @throws ContentDecoratorException
      */
-    public function loadContent(int $contentId, ?array $languages = null, ?int $versionNo = null, bool $useAlwaysAvailable = true): ContentDecorator;
+    public function loadContent(
+        int $contentId,
+        ?array $languages = null,
+        ?int $versionNo = null,
+        bool $useAlwaysAvailable = true
+    ): ContentDecorator;
 
     /**
      * Loads and decorates content of a given remote ID.
@@ -57,11 +64,16 @@ interface ContentDecoratorManager
      * @param int|null $versionNo
      * @param bool $useAlwaysAvailable
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator
+     * @return ContentDecorator
      *
-     * @throws \Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException
+     * @throws ContentDecoratorException
      */
-    public function loadContentFromRemote(string $contentRemoteId, ?array $languages = null, ?int $versionNo = null, bool $useAlwaysAvailable = true): ContentDecorator;
+    public function loadContentFromRemote(
+        string $contentRemoteId,
+        ?array $languages = null,
+        ?int $versionNo = null,
+        bool $useAlwaysAvailable = true
+    ): ContentDecorator;
 
     /**
      * Loads and decorates a location of a given ID.
@@ -71,11 +83,15 @@ interface ContentDecoratorManager
      * @param string[]|null $prioritizedLanguages
      * @param bool $useAlwaysAvailable
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator
+     * @return ContentDecorator
      *
-     * @throws \Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException
+     * @throws ContentDecoratorException
      */
-    public function loadLocation(int $locationId, ?array $prioritizedLanguages = null, bool $useAlwaysAvailable = true): ContentDecorator;
+    public function loadLocation(
+        int $locationId,
+        ?array $prioritizedLanguages = null,
+        bool $useAlwaysAvailable = true
+    ): ContentDecorator;
 
     /**
      * Loads and decorates a location of a given remote ID.
@@ -85,11 +101,15 @@ interface ContentDecoratorManager
      * @param string[]|null $prioritizedLanguages
      * @param bool $useAlwaysAvailable
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator
+     * @return ContentDecorator
      *
-     * @throws \Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException
+     * @throws ContentDecoratorException
      */
-    public function loadLocationFromRemote(string $locationRemoteId, ?array $prioritizedLanguages = null, bool $useAlwaysAvailable = true): ContentDecorator;
+    public function loadLocationFromRemote(
+        string $locationRemoteId,
+        ?array $prioritizedLanguages = null,
+        bool $useAlwaysAvailable = true
+    ): ContentDecorator;
 
     /**
      * Gets a repository for a given ContentDecorator class.
@@ -101,7 +121,7 @@ interface ContentDecoratorManager
      *
      * @return RepositoryInterface<T>
      *
-     * @throws \Kaliop\Contracts\ContentDecorator\Exception\InvalidContentDecoratorRepositoryException
+     * @throws InvalidContentDecoratorRepositoryException
      */
     public function getRepository(string $className): RepositoryInterface;
 }

@@ -23,8 +23,7 @@ class ContentDecoratorManager implements ContentDecoratorManagerInterface
         private readonly Repository $repository,
         private readonly ContentDecoratorFactory $decoratorFactory,
         private readonly RepositoryFactory $repositoryFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * {@inheritDoc}
@@ -49,8 +48,12 @@ class ContentDecoratorManager implements ContentDecoratorManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function loadContent(int $contentId, ?array $languages = null, ?int $versionNo = null, bool $useAlwaysAvailable = true): ContentDecorator
-    {
+    public function loadContent(
+        int $contentId,
+        ?array $languages = null,
+        ?int $versionNo = null,
+        bool $useAlwaysAvailable = true
+    ): ContentDecorator {
         try {
             return $this->decoratorFactory->decorate(
                 $this->repository->getContentService()->loadContent($contentId, $languages, $versionNo, $useAlwaysAvailable),
@@ -66,8 +69,12 @@ class ContentDecoratorManager implements ContentDecoratorManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function loadContentFromRemote(string $contentRemoteId, ?array $languages = null, ?int $versionNo = null, bool $useAlwaysAvailable = true): ContentDecorator
-    {
+    public function loadContentFromRemote(
+        string $contentRemoteId,
+        ?array $languages = null,
+        ?int $versionNo = null,
+        bool $useAlwaysAvailable = true
+    ): ContentDecorator {
         try {
             return $this->decoratorFactory->decorate(
                 $this->repository->getContentService()->loadContentByRemoteId($contentRemoteId, $languages, $versionNo, $useAlwaysAvailable),
@@ -83,8 +90,11 @@ class ContentDecoratorManager implements ContentDecoratorManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function loadLocation(int $locationId, ?array $prioritizedLanguages = null, bool $useAlwaysAvailable = true): ContentDecorator
-    {
+    public function loadLocation(
+        int $locationId,
+        ?array $prioritizedLanguages = null,
+        bool $useAlwaysAvailable = true
+    ): ContentDecorator {
         try {
             $location = $this->repository->getLocationService()->loadLocation($locationId, $prioritizedLanguages, $useAlwaysAvailable);
 
@@ -102,8 +112,11 @@ class ContentDecoratorManager implements ContentDecoratorManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function loadLocationFromRemote(string $locationRemoteId, ?array $prioritizedLanguages = null, bool $useAlwaysAvailable = true): ContentDecorator
-    {
+    public function loadLocationFromRemote(
+        string $locationRemoteId,
+        ?array $prioritizedLanguages = null,
+        bool $useAlwaysAvailable = true
+    ): ContentDecorator {
         try {
             $location = $this->repository->getLocationService()->loadLocationByRemoteId($locationRemoteId, $prioritizedLanguages, $useAlwaysAvailable);
 

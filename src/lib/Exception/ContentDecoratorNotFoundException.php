@@ -6,6 +6,4 @@ namespace Kaliop\ContentDecorator\Exception;
 
 use Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorNotFoundException as BaseContentDecoratorNotFoundException;
 
-class ContentDecoratorNotFoundException extends BaseContentDecoratorNotFoundException
-{
-}
+class ContentDecoratorNotFoundException extends BaseContentDecoratorNotFoundException {}

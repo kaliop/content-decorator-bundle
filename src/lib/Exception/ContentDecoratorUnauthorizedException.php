@@ -6,6 +6,4 @@ namespace Kaliop\ContentDecorator\Exception;
 
 use Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorUnauthorizedException as BaseContentDecoratorUnauthorizedException;
 
-class ContentDecoratorUnauthorizedException extends BaseContentDecoratorUnauthorizedException
-{
-}
+class ContentDecoratorUnauthorizedException extends BaseContentDecoratorUnauthorizedException {}

@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Kaliop\ContentDecorator\Event;
 
+use Kaliop\Contracts\ContentDecorator\Model\ContentDecorator;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class MultipleContentDecoratedEvent extends Event
 {
     /**
-     * @param \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator[] $contentDecorators
+     * @param ContentDecorator[] $contentDecorators
      */
     public function __construct(
         private readonly array $contentDecorators,
-    ) {
-    }
+    ) {}
 
     /**
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator[]
+     * @return ContentDecorator[]
      */
     public function getContentDecorators(): array
     {

@@ -14,8 +14,7 @@ class ContentTypeMapper extends AbstractContentIdentifierMapper implements Conte
      */
     public function __construct(
         private readonly array $mapping,
-    ) {
-    }
+    ) {}
 
     public function getClassNameByIdentifier(string $identifier): ?string
     {

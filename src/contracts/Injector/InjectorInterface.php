@@ -11,14 +11,14 @@ interface InjectorInterface
     /**
      * Injects extra data or services to a given content decorator.
      *
-     * @param \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator $contentDecorator
+     * @param ContentDecorator $contentDecorator
      */
     public function inject(ContentDecorator $contentDecorator): void;
 
     /**
      * Check if given content decorator is supported by this injector.
      *
-     * @param \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator $contentDecorator
+     * @param ContentDecorator $contentDecorator
      */
     public function supports(ContentDecorator $contentDecorator): bool;
 }

@@ -12,6 +12,7 @@ use Ibexa\Contracts\Core\Repository\Values\Content\Location;
 use Ibexa\Contracts\Core\Repository\Values\Content\LocationQuery;
 use Ibexa\Contracts\Core\Repository\Values\Content\Query;
 use Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion;
+use Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause;
 use Ibexa\Contracts\Core\Repository\Values\Content\Search\SearchResult;
 use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 use Kaliop\ContentDecorator\Search\Generator\DecoratedContentGenerator;
@@ -38,17 +39,18 @@ abstract class AbstractContentRepository implements RepositoryInterface
         protected readonly ConfigResolverInterface $configResolver,
         protected readonly string $className,
         protected readonly array $contentTypes = [],
-    ) {
-    }
+    ) {}
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion[] $criteria
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause[] $sortClauses
+     * @param Criterion[] $criteria
+     * @param SortClause[] $sortClauses
      *
      * @return T|null
      */
-    public function findOneBy(array $criteria = [], array $sortClauses = []): ?ContentDecorator
-    {
+    public function findOneBy(
+        array $criteria = [],
+        array $sortClauses = []
+    ): ?ContentDecorator {
         /** @var T[] $results */
         $results = $this->findBy($criteria, $sortClauses, 1);
 
@@ -56,13 +58,15 @@ abstract class AbstractContentRepository implements RepositoryInterface
     }
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion[] $criteria
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause[] $sortClauses
+     * @param Criterion[] $criteria
+     * @param SortClause[] $sortClauses
      *
      * @return T|null
      */
-    public function findOneLocationBy(array $criteria = [], array $sortClauses = []): ?ContentDecorator
-    {
+    public function findOneLocationBy(
+        array $criteria = [],
+        array $sortClauses = []
+    ): ?ContentDecorator {
         /** @var T[] $results */
         $results = $this->findLocationsBy($criteria, $sortClauses, 1);
 
@@ -70,15 +74,19 @@ abstract class AbstractContentRepository implements RepositoryInterface
     }
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion[] $criteria
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause[] $sortClauses
+     * @param Criterion[] $criteria
+     * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int|null $offset
      *
      * @return T[]
      */
-    public function findBy(array $criteria = [], array $sortClauses = [], ?int $limit = null, ?int $offset = null): array
-    {
+    public function findBy(
+        array $criteria = [],
+        array $sortClauses = [],
+        ?int $limit = null,
+        ?int $offset = null
+    ): array {
         $query = new Query();
 
         $query->filter = $this->getFilters($criteria);
@@ -94,15 +102,19 @@ abstract class AbstractContentRepository implements RepositoryInterface
     }
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion[] $criteria
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause[] $sortClauses
+     * @param Criterion[] $criteria
+     * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int|null $offset
      *
      * @return T[]
      */
-    public function findLocationsBy(array $criteria = [], array $sortClauses = [], ?int $limit = null, ?int $offset = null): array
-    {
+    public function findLocationsBy(
+        array $criteria = [],
+        array $sortClauses = [],
+        ?int $limit = null,
+        ?int $offset = null
+    ): array {
         $query = new LocationQuery();
 
         $query->filter = $this->getFilters($criteria);
@@ -119,14 +131,18 @@ abstract class AbstractContentRepository implements RepositoryInterface
 
     /**
      * @param int $parentLocationId
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause[] $sortClauses
+     * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int $offset
      *
      * @return T[]
      */
-    public function findVisibleByParentLocation(int $parentLocationId, array $sortClauses = [], ?int $limit = null, int $offset = 0): array
-    {
+    public function findVisibleByParentLocation(
+        int $parentLocationId,
+        array $sortClauses = [],
+        ?int $limit = null,
+        int $offset = 0
+    ): array {
         if (!$sortClauses) {
             try {
                 $parentLocation = $this->repository->getLocationService()->loadLocation($parentLocationId);
@@ -152,14 +168,18 @@ abstract class AbstractContentRepository implements RepositoryInterface
 
     /**
      * @param string $subtree
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause[] $sortClauses
+     * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int $offset
      *
      * @return T[]
      */
-    public function findVisibleBySubtree(string $subtree, array $sortClauses = [], ?int $limit = null, int $offset = 0): array
-    {
+    public function findVisibleBySubtree(
+        string $subtree,
+        array $sortClauses = [],
+        ?int $limit = null,
+        int $offset = 0
+    ): array {
         return $this->findLocationsBy(
             [
                 new Criterion\Subtree($subtree),
@@ -172,9 +192,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
     }
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion[] $criteria
+     * @param Criterion[] $criteria
      *
-     * @return \Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion
+     * @return Criterion
      */
     protected function getFilters(array $criteria = []): Criterion
     {
@@ -187,35 +207,41 @@ abstract class AbstractContentRepository implements RepositoryInterface
     }
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\LocationQuery $query
+     * @param LocationQuery $query
      * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
      *
      * @return T[]
      */
-    protected function findLocations(LocationQuery $query, array $languageFilter = [], bool $filterOnUserPermissions = true): array
-    {
+    protected function findLocations(
+        LocationQuery $query,
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true
+    ): array {
         return $this->decorateSearchResult(
             $this->repository->getSearchService()->findLocations($query, $languageFilter, $filterOnUserPermissions)
         );
     }
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query $query
+     * @param Query $query
      * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
      *
      * @return T[]
      */
-    protected function findContents(Query $query, array $languageFilter = [], bool $filterOnUserPermissions = true): array
-    {
+    protected function findContents(
+        Query $query,
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true
+    ): array {
         return $this->decorateSearchResult(
             $this->repository->getSearchService()->findContent($query, $languageFilter, $filterOnUserPermissions)
         );
     }
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Search\SearchResult $searchResult
+     * @param SearchResult $searchResult
      *
      * @return T[]
      */

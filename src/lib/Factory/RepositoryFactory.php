@@ -20,7 +20,7 @@ use ReflectionClass;
 class RepositoryFactory
 {
     /**
-     * @var \Kaliop\Contracts\ContentDecorator\Repository\RepositoryInterface<ContentDecorator>[]
+     * @var RepositoryInterface<ContentDecorator>[]
      */
     private array $repositories = [];
 
@@ -33,20 +33,21 @@ class RepositoryFactory
         private readonly ConfigResolverInterface $configResolver,
         private readonly iterable $serviceRepositories,
         private readonly ?string $defaultRepositoryClass,
-    ) {
-    }
+    ) {}
 
     /**
      * @template T of ContentDecorator
      *
      * @param class-string<T> $className
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Repository\RepositoryInterface<T>
+     * @return RepositoryInterface<T>
      *
-     * @throws \Kaliop\ContentDecorator\Exception\InvalidContentDecoratorRepositoryException
+     * @throws InvalidContentDecoratorRepositoryException
      */
-    public function getRepository(ContentDecoratorManager $manager, string $className): RepositoryInterface
-    {
+    public function getRepository(
+        ContentDecoratorManager $manager,
+        string $className
+    ): RepositoryInterface {
         if (isset($this->repositories[$className])) {
             /** @var RepositoryInterface<T> $repository */
             $repository = $this->repositories[$className];
@@ -67,14 +68,16 @@ class RepositoryFactory
     /**
      * @template T of ContentDecorator
      *
-     * @param \ReflectionClass<T> $class
+     * @param ReflectionClass<T> $class
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Repository\RepositoryInterface<T>
+     * @return RepositoryInterface<T>
      *
-     * @throws \Kaliop\ContentDecorator\Exception\InvalidContentDecoratorRepositoryException
+     * @throws InvalidContentDecoratorRepositoryException
      */
-    protected function createRepository(ReflectionClass $class, ContentDecoratorManager $manager): RepositoryInterface
-    {
+    protected function createRepository(
+        ReflectionClass $class,
+        ContentDecoratorManager $manager
+    ): RepositoryInterface {
         $repositoryClass = null;
         $contentTypes = [];
 

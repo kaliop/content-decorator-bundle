@@ -13,6 +13,7 @@ use Kaliop\ContentDecorator\Exception\ContentDecoratorTrashedException;
 use Kaliop\ContentDecorator\InjectorCollection;
 use Kaliop\ContentDecorator\ProxyFactory\ProxyGenerator;
 use Kaliop\Contracts\ContentDecorator\ContentMapper\ContentMapperInterface;
+use Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException;
 use Kaliop\Contracts\ContentDecorator\Model\ContentDecorator;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\ResetInterface;
@@ -41,18 +42,19 @@ class ContentDecoratorFactory implements ResetInterface
         private readonly ContentMapperInterface $contentMapper,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ?string $defaultClass,
-    ) {
-    }
+    ) {}
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Content $content
+     * @param Content $content
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator
+     * @return ContentDecorator
      *
-     * @throws \Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException
+     * @throws ContentDecoratorException
      */
-    public function decorate(Content $content, ?Location $location): ContentDecorator
-    {
+    public function decorate(
+        Content $content,
+        ?Location $location
+    ): ContentDecorator {
         $contentDecorator = $this->loadCached($content, $location);
         if ($contentDecorator) {
             return $contentDecorator;
@@ -62,14 +64,16 @@ class ContentDecoratorFactory implements ResetInterface
     }
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Content $content
+     * @param Content $content
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator
+     * @return ContentDecorator
      *
-     * @throws \Kaliop\Contracts\ContentDecorator\Exception\ContentDecoratorException
+     * @throws ContentDecoratorException
      */
-    public function refresh(Content $content, ?Location $location): ContentDecorator
-    {
+    public function refresh(
+        Content $content,
+        ?Location $location
+    ): ContentDecorator {
         $contentDecorator = $this->initialize($content, $location);
 
         $event = new ContentDecoratedEvent($contentDecorator);
@@ -82,9 +86,9 @@ class ContentDecoratorFactory implements ResetInterface
     }
 
     /**
-     * @param iterable<\Ibexa\Contracts\Core\Repository\Values\Content\Content|\Ibexa\Contracts\Core\Repository\Values\Content\Location> $objects
+     * @param iterable<Content|Location> $objects
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator[]
+     * @return ContentDecorator[]
      */
     public function decorateMultiple(iterable $objects): array
     {
@@ -123,8 +127,10 @@ class ContentDecoratorFactory implements ResetInterface
         return $contentDecorators;
     }
 
-    private function initialize(Content $content, ?Location $location): ContentDecorator
-    {
+    private function initialize(
+        Content $content,
+        ?Location $location
+    ): ContentDecorator {
         // Check if content is trashed
         if ($content->getContentInfo()->isTrashed()) {
             throw new ContentDecoratorTrashedException(sprintf('"%s" (id: %d) is trashed.', $content->getName(), $content->getId()));
@@ -136,31 +142,33 @@ class ContentDecoratorFactory implements ResetInterface
             throw new ContentDecoratorMissingException(sprintf('Missing content decorator class for "%s" (id: %d).', $content->getName(), $content->getId()));
         }
 
-        /** @var \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator $contentDecorator */
+        /** @var ContentDecorator $contentDecorator */
         $contentDecorator = new $className($content, $location ?? $content->getContentInfo()->getMainLocation());
         $this->injector->injectDependencies($contentDecorator);
 
-        /** @var \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator $contentDecorator */
+        /** @var ContentDecorator $contentDecorator */
         $contentDecorator = $this->proxyFactory->createProxy($contentDecorator);
 
         return $contentDecorator;
     }
 
-    private function loadCached(Content $content, ?Location $location): ?ContentDecorator
-    {
+    private function loadCached(
+        Content $content,
+        ?Location $location
+    ): ?ContentDecorator {
         $key = $this->getCacheKey($content);
         if (isset($this->cache[$key])) {
             if (!$location) {
                 // Load with any location if not specified
                 $locationId = array_key_first($this->cache[$key]);
                 if ($locationId !== null && isset($this->cache[$key][$locationId])) {
-                    /** @var \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator|null $contentDecorator */
+                    /** @var ContentDecorator|null $contentDecorator */
                     $contentDecorator = $this->cache[$key][$locationId]->get();
 
                     return $contentDecorator;
                 }
             } elseif (isset($this->cache[$key][$location->id ?? 0])) {
-                /** @var \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator|null $contentDecorator */
+                /** @var ContentDecorator|null $contentDecorator */
                 $contentDecorator = $this->cache[$key][$location->id ?? 0]->get();
 
                 return $contentDecorator;

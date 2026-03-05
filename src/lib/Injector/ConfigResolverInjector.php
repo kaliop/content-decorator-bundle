@@ -13,8 +13,7 @@ class ConfigResolverInjector implements InjectorInterface
 {
     public function __construct(
         private ConfigResolverInterface $configResolver,
-    ) {
-    }
+    ) {}
 
     public function inject(ContentDecorator $contentDecorator): void
     {

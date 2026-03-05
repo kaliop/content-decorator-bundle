@@ -29,7 +29,8 @@
         "symfony/dependency-injection": "^5.4",
         "symfony/event-dispatcher": "^5.4",
         "symfony/http-kernel": "^5.4",
-        "ibexa/core": "~4.6"
+        "ibexa/core": "~4.6",
+        "nyholm/psr7": "^1.8"
     },
     "require-dev": {
         "ibexa/code-style": "~2.2.0",

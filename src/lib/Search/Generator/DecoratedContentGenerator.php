@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Kaliop\ContentDecorator\Search\Generator;
 
 use Ibexa\Contracts\Core\Repository\SearchService;
+use Ibexa\Contracts\Core\Repository\Values\Content\Content;
+use Ibexa\Contracts\Core\Repository\Values\Content\Location;
 use Ibexa\Contracts\Core\Repository\Values\Content\LocationQuery;
 use Ibexa\Contracts\Core\Repository\Values\Content\Query;
 use Ibexa\Contracts\Core\Repository\Values\Content\Search\SearchResult;
@@ -17,7 +19,7 @@ use Kaliop\Contracts\ContentDecorator\Model\ContentDecorator;
 class DecoratedContentGenerator
 {
     /**
-     * @var \Ibexa\Contracts\Core\Repository\Values\Content\Search\SearchResult|null
+     * @var SearchResult|null
      */
     private ?SearchResult $searchResult = null;
 
@@ -61,7 +63,7 @@ class DecoratedContentGenerator
 
             $currentBatchIds = [];
             foreach ($this->searchResult->searchHits as $searchHit) {
-                /** @var \Ibexa\Contracts\Core\Repository\Values\Content\Content|\Ibexa\Contracts\Core\Repository\Values\Content\Location $object */
+                /** @var Content|Location $object */
                 $object = $searchHit->valueObject;
                 if (!in_array($object->id, $lastBatchIds)) {
                     $currentBatchIds[] = $object->id;

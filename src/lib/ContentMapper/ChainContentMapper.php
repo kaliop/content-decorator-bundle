@@ -14,8 +14,7 @@ class ChainContentMapper implements ContentMapperInterface
      */
     public function __construct(
         private readonly iterable $contentMappers
-    ) {
-    }
+    ) {}
 
     public function getClassName(Content $content): ?string
     {

@@ -13,8 +13,7 @@ class ManagerInjector implements InjectorInterface
 {
     public function __construct(
         private ContentDecoratorManager $manager,
-    ) {
-    }
+    ) {}
 
     public function inject(ContentDecorator $contentDecorator): void
     {

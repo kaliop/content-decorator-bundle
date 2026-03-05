@@ -11,6 +11,4 @@ use Kaliop\Contracts\ContentDecorator\Model\ContentDecorator;
  *
  * @extends AbstractContentRepository<T>
  */
-class ContentRepository extends AbstractContentRepository
-{
-}
+class ContentRepository extends AbstractContentRepository {}

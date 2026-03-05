@@ -13,8 +13,7 @@ class TranslatorInjector implements InjectorInterface
 {
     public function __construct(
         private TranslatorInterface $translator,
-    ) {
-    }
+    ) {}
 
     public function inject(ContentDecorator $contentDecorator): void
     {

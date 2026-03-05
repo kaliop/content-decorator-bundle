@@ -6,6 +6,4 @@ namespace Kaliop\ContentDecorator\Exception;
 
 use Kaliop\Contracts\ContentDecorator\Exception\InvalidContentDecoratorRepositoryException as BaseInvalidContentDecoratorClassException;
 
-class InvalidContentDecoratorRepositoryException extends BaseInvalidContentDecoratorClassException
-{
-}
+class InvalidContentDecoratorRepositoryException extends BaseInvalidContentDecoratorClassException {}

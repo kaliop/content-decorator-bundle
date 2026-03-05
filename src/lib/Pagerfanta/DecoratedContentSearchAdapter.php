@@ -12,6 +12,7 @@ use Ibexa\Contracts\Core\Repository\Values\Content\Query;
 use Ibexa\Contracts\Core\Repository\Values\Content\Search\SearchResult;
 use Ibexa\Core\Pagination\Pagerfanta\AbstractSearchResultAdapter;
 use Kaliop\Contracts\ContentDecorator\ContentDecoratorManager;
+use Kaliop\Contracts\ContentDecorator\Model\ContentDecorator;
 
 /**
  * Pagerfanta adapter for Ibexa content search.
@@ -20,14 +21,14 @@ use Kaliop\Contracts\ContentDecorator\ContentDecoratorManager;
 class DecoratedContentSearchAdapter extends AbstractSearchResultAdapter
 {
     /**
-     * @var \Kaliop\Contracts\ContentDecorator\ContentDecoratorManager
+     * @var ContentDecoratorManager
      */
     private ContentDecoratorManager $manager;
 
     /**
-     * @param \Ibexa\Contracts\Core\Repository\Values\Content\Query $query
-     * @param \Ibexa\Contracts\Core\Repository\SearchService $searchService
-     * @param \Kaliop\Contracts\ContentDecorator\ContentDecoratorManager $manager
+     * @param Query $query
+     * @param SearchService $searchService
+     * @param ContentDecoratorManager $manager
      * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      */
     public function __construct(
@@ -44,12 +45,14 @@ class DecoratedContentSearchAdapter extends AbstractSearchResultAdapter
      * @param int $offset
      * @param int $length
      *
-     * @return \Kaliop\Contracts\ContentDecorator\Model\ContentDecorator[]
+     * @return ContentDecorator[]
      *
      * @phpstan-ignore-next-line
      */
-    public function getSlice($offset, $length): array
-    {
+    public function getSlice(
+        $offset,
+        $length
+    ): array {
         $contents = [];
 
         foreach (parent::getSlice($offset, $length) as $hit) {
@@ -66,8 +69,11 @@ class DecoratedContentSearchAdapter extends AbstractSearchResultAdapter
     /**
      * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      */
-    protected function executeQuery(SearchService $searchService, Query $query, array $languageFilter): SearchResult
-    {
+    protected function executeQuery(
+        SearchService $searchService,
+        Query $query,
+        array $languageFilter
+    ): SearchResult {
         if ($query instanceof LocationQuery) {
             return $searchService->findLocations($query, $languageFilter);
         } else {

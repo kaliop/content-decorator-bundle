@@ -7,6 +7,7 @@ namespace Kaliop\Bundle\ContentDecorator;
 use Doctrine\DBAL\Types\Type;
 use Kaliop\Bundle\ContentDecorator\Doctrine\Type\DecoratedContentType;
 use Kaliop\Contracts\ContentDecorator\ContentDecoratorManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -23,13 +24,13 @@ final class KaliopContentDecoratorBundle extends Bundle
     {
         parent::boot();
 
-        /** @var \Kaliop\Contracts\ContentDecorator\ContentDecoratorManager $contentManager */
+        /** @var ContentDecoratorManager $contentManager */
         $contentManager = $this->container?->get(ContentDecoratorManager::class);
 
-        /** @var \Psr\Log\LoggerInterface $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->container?->get('logger', ContainerInterface::NULL_ON_INVALID_REFERENCE);
 
-        /** @var \Kaliop\Bundle\ContentDecorator\Doctrine\Type\DecoratedContentType $decoratedContentType */
+        /** @var DecoratedContentType $decoratedContentType */
         $decoratedContentType = Type::getType(DecoratedContentType::TYPE);
         $decoratedContentType->setContentManager($contentManager);
         $decoratedContentType->setLogger($logger);

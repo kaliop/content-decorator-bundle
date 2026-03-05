@@ -14,8 +14,10 @@ abstract class ContentDecorator implements Stringable
 
     private ?Location $location;
 
-    final public function __construct(Content $content, ?Location $location)
-    {
+    final public function __construct(
+        Content $content,
+        ?Location $location
+    ) {
         $this->content = $content;
         $this->location = $location;
     }

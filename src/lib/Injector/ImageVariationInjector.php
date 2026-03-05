@@ -13,8 +13,7 @@ class ImageVariationInjector implements InjectorInterface
 {
     public function __construct(
         private VariationHandler $variationHandler,
-    ) {
-    }
+    ) {}
 
     public function inject(ContentDecorator $contentDecorator): void
     {

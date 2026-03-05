@@ -15,8 +15,7 @@ class ProxyCachedMethodInterceptor
 {
     public function __construct(
         private readonly AdapterInterface $cache,
-    ) {
-    }
+    ) {}
 
     /**
      * @param AccessInterceptorInterface<T>&T $proxy
@@ -27,8 +26,13 @@ class ProxyCachedMethodInterceptor
      *
      * @return mixed
      */
-    public function prefix(AccessInterceptorInterface&ContentDecorator $proxy, ContentDecorator $realInstance, string $method, array $params, bool &$returnEarly): mixed
-    {
+    public function prefix(
+        AccessInterceptorInterface&ContentDecorator $proxy,
+        ContentDecorator $realInstance,
+        string $method,
+        array $params,
+        bool &$returnEarly
+    ): mixed {
         $item = $this->cache->getItem($this->getCacheKey($method, $params));
         if ($item->isHit()) {
             $returnEarly = true;
@@ -51,8 +55,14 @@ class ProxyCachedMethodInterceptor
      *
      * @return mixed
      */
-    public function suffix(AccessInterceptorInterface&ContentDecorator $proxy, ContentDecorator $realInstance, string $method, array $params, mixed $returnValue, bool &$returnEarly): mixed
-    {
+    public function suffix(
+        AccessInterceptorInterface&ContentDecorator $proxy,
+        ContentDecorator $realInstance,
+        string $method,
+        array $params,
+        mixed $returnValue,
+        bool &$returnEarly
+    ): mixed {
         $item = $this->cache->getItem($this->getCacheKey($method, $params));
         $item->set($returnValue);
 
@@ -64,8 +74,10 @@ class ProxyCachedMethodInterceptor
     /**
      * @param array<string, mixed> $params
      */
-    private function getCacheKey(string $method, array $params): string
-    {
+    private function getCacheKey(
+        string $method,
+        array $params
+    ): string {
         return sha1($method . serialize($params));
     }
 }

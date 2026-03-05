@@ -11,8 +11,7 @@ class ContentDecoratedEvent extends Event
 {
     public function __construct(
         private readonly ContentDecorator $contentDecorator,
-    ) {
-    }
+    ) {}
 
     public function getContentDecorator(): ContentDecorator
     {

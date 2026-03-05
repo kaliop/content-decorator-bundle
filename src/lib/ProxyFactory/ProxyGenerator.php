@@ -27,8 +27,7 @@ final class ProxyGenerator
         private readonly string $proxyCacheDir,
         private readonly int $cacheLifetime = 0,
         private readonly int $maxCacheItems = 0,
-    ) {
-    }
+    ) {}
 
     /**
      * @template T of ContentDecorator

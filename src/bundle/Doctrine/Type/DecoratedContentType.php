@@ -16,17 +16,17 @@ class DecoratedContentType extends Type
     public const TYPE = 'decorated_content';
 
     /**
-     * @var \Kaliop\Contracts\ContentDecorator\ContentDecoratorManager
+     * @var ContentDecoratorManager
      */
     private ContentDecoratorManager $contentManager;
 
     /**
-     * @var \Psr\Log\LoggerInterface|null
+     * @var LoggerInterface|null
      */
     private ?LoggerInterface $logger;
 
     /**
-     * @param \Kaliop\Contracts\ContentDecorator\ContentDecoratorManager $contentManager
+     * @param ContentDecoratorManager $contentManager
      */
     public function setContentManager(ContentDecoratorManager $contentManager): void
     {
@@ -34,7 +34,7 @@ class DecoratedContentType extends Type
     }
 
     /**
-     * @param \Psr\Log\LoggerInterface|null $logger
+     * @param LoggerInterface|null $logger
      */
     public function setLogger(?LoggerInterface $logger): void
     {
@@ -44,8 +44,10 @@ class DecoratedContentType extends Type
     /**
      * {@inheritDoc}
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
-    {
+    public function convertToDatabaseValue(
+        $value,
+        AbstractPlatform $platform
+    ) {
         if ($value instanceof ContentDecorator) {
             return $value->getContent()->id;
         }
@@ -56,8 +58,10 @@ class DecoratedContentType extends Type
     /**
      * {@inheritDoc}
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
-    {
+    public function convertToPHPValue(
+        $value,
+        AbstractPlatform $platform
+    ) {
         if ($value) {
             try {
                 return $this->contentManager->loadContent($value);
@@ -72,8 +76,10 @@ class DecoratedContentType extends Type
     /**
      * @param mixed[] $column
      */
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
-    {
+    public function getSQLDeclaration(
+        array $column,
+        AbstractPlatform $platform
+    ): string {
         return $platform->getIntegerTypeDeclarationSQL($column);
     }
 

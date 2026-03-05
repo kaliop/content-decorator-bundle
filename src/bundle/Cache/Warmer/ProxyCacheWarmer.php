@@ -21,8 +21,7 @@ final class ProxyCacheWarmer implements CacheWarmerInterface
         private readonly array $mappings = [],
         private readonly array $explicitMapping = [],
         private readonly ?string $defaultClass = null,
-    ) {
-    }
+    ) {}
 
     public function isOptional(): bool
     {

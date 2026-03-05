@@ -23,8 +23,10 @@ final class Decorator
      * @param string|null $repositoryClass
      * @param string[] $contentTypes
      */
-    public function __construct(string|array $contentTypes = [], ?string $repositoryClass = null)
-    {
+    public function __construct(
+        string|array $contentTypes = [],
+        ?string $repositoryClass = null
+    ) {
         $this->contentTypes = (array) $contentTypes;
         $this->repositoryClass = $repositoryClass;
     }

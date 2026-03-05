@@ -13,8 +13,7 @@ class LoggerInjector implements InjectorInterface
 {
     public function __construct(
         private LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     public function inject(ContentDecorator $contentDecorator): void
     {
