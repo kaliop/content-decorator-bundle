@@ -1,0 +1,39 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - main
+            - '*.x'
+    pull_request:
+
+jobs:
+    quality:
+        name: Quality checks
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.1'
+                  tools: composer:v2
+                  coverage: none
+
+            - name: Validate composer
+              run: composer validate --strict
+
+            - name: Install dependencies
+              run: composer install --no-interaction --no-progress
+
+            - name: Check code style
+              run: composer check-cs
+
+            - name: Run PHPStan
+              run: composer phpstan
+
+            - name: Run Deptrac
+              run: composer deptrac

@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest an improvement for this bundle.
+title: "feat: "
+labels:
+    - enhancement
+body:
+    -   type: textarea
+        id: problem
+        attributes:
+            label: Problem to solve
+            description: Describe the use case or pain point.
+        validations:
+            required: true
+    -   type: textarea
+        id: proposal
+        attributes:
+            label: Proposed solution
+            description: Describe your preferred approach.
+        validations:
+            required: true
+    -   type: textarea
+        id: alternatives
+        attributes:
+            label: Alternatives considered
+            description: Optional.
+        validations:
+            required: false

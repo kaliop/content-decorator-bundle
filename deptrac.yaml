@@ -1,0 +1,28 @@
+deptrac:
+    paths:
+        - ./src
+    exclude_files:
+        - '#src/bundle/DependencyInjection/KaliopContentDecoratorExtension.php$#'
+    layers:
+        -   name: Bundle
+            collectors:
+                -   type: directory
+                    value: ./src/bundle/.*
+        -   name: Contracts
+            collectors:
+                -   type: directory
+                    value: ./src/contracts/.*
+        -   name: Library
+            collectors:
+                -   type: directory
+                    value: ./src/lib/.*
+    ruleset:
+        Bundle:
+            - Bundle
+            - Contracts
+            - Library
+        Contracts:
+            - Contracts
+        Library:
+            - Contracts
+            - Library

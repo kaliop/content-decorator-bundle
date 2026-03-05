@@ -1,0 +1,90 @@
+services:
+    Kaliop\Bundle\ContentDecorator\Cache\Warmer\ProxyCacheWarmer:
+        arguments:
+            - '@Kaliop\ContentDecorator\ProxyFactory\ProxyGenerator'
+            - ~ # mappings, auto-injected
+            - ~ # explicit mapping, auto-injected
+            - ~ # default class, auto-injected
+        tags:
+            - { name: kernel.cache_warmer }
+
+    Kaliop\ContentDecorator\InjectorCollection:
+        arguments:
+            - !tagged_iterator kaliop.content_decorator.injector
+
+    Kaliop\ContentDecorator\ContentMapper\ChainContentMapper:
+        arguments:
+            - !tagged_iterator kaliop.content_decorator.content_mapper
+
+    Kaliop\ContentDecorator\Factory\ContentDecoratorFactory:
+        arguments:
+            - '@Kaliop\ContentDecorator\ProxyFactory\ProxyGenerator'
+            - '@Kaliop\ContentDecorator\InjectorCollection'
+            - ~ # mapper, auto-injected
+            - '@event_dispatcher'
+            - ~ # default class, auto-injected
+
+    Kaliop\ContentDecorator\ProxyFactory\ProxyGenerator:
+        arguments:
+            - '%kaliop.content_decorator.proxy_cache_dir%'
+            - '%kaliop.content_decorator.cache_lifetime%'
+            - '%kaliop.content_decorator.cache_max_items%'
+
+    Kaliop\ContentDecorator\Factory\RepositoryFactory:
+        arguments:
+            - '@ibexa.api.repository'
+            - '@ibexa.config.resolver'
+            - !tagged_iterator kaliop.content_decorator.repository
+            - ~ # default repository class, auto-injected
+
+    Kaliop\ContentDecorator\ContentDecoratorManager:
+        arguments:
+            - '@ibexa.api.repository'
+            - '@Kaliop\ContentDecorator\Factory\ContentDecoratorFactory'
+            - '@Kaliop\ContentDecorator\Factory\RepositoryFactory'
+
+    Kaliop\Contracts\ContentDecorator\ContentDecoratorManager:
+        alias: Kaliop\ContentDecorator\ContentDecoratorManager
+        public: true
+
+    Kaliop\ContentDecorator\Injector\ConfigResolverInjector:
+        arguments:
+            - '@ibexa.config.resolver'
+        tags:
+            - { name: kaliop.content_decorator.injector }
+
+    Kaliop\ContentDecorator\Injector\IbexaRepositoryInjector:
+        arguments:
+            - '@ibexa.api.repository'
+        tags:
+            - { name: kaliop.content_decorator.injector }
+
+    Kaliop\ContentDecorator\Injector\ImageVariationInjector:
+        arguments:
+            - '@ibexa.field_type.ezimage.variation_service'
+        tags:
+            - { name: kaliop.content_decorator.injector }
+
+    Kaliop\ContentDecorator\Injector\LoggerInjector:
+        arguments:
+            - '@logger'
+        tags:
+            - { name: kaliop.content_decorator.injector }
+
+    Kaliop\ContentDecorator\Injector\ManagerInjector:
+        arguments:
+            - '@Kaliop\Contracts\ContentDecorator\ContentDecoratorManager'
+        tags:
+            - { name: kaliop.content_decorator.injector }
+
+    Kaliop\ContentDecorator\Injector\TranslatorInjector:
+        arguments:
+            - '@translator'
+        tags:
+            - { name: kaliop.content_decorator.injector }
+
+    Kaliop\ContentDecorator\Injector\UrlGeneratorInjector:
+        arguments:
+            - '@router'
+        tags:
+            - { name: kaliop.content_decorator.injector }

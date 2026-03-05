@@ -1,0 +1,4 @@
+parameters:
+    kaliop.content_decorator.proxy_cache_dir: '%kernel.cache_dir%/kaliop_content_decorator/proxy'
+    kaliop.content_decorator.cache_lifetime: 0
+    kaliop.content_decorator.cache_max_items: 0

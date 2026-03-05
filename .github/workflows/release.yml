@@ -1,0 +1,54 @@
+name: Release
+
+on:
+    push:
+        tags:
+            - 'v*.*.*'
+
+permissions:
+    contents: write
+
+jobs:
+    release:
+        name: Build release
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.1'
+                  tools: composer:v2
+                  coverage: none
+
+            - name: Validate composer
+              run: composer validate --strict
+
+            - name: Install dependencies
+              run: composer install --no-interaction --no-progress
+
+            - name: Check code style
+              run: composer check-cs
+
+            - name: Run PHPStan
+              run: composer phpstan
+
+            - name: Run Deptrac
+              run: composer deptrac
+
+            - name: Create GitHub release
+              uses: softprops/action-gh-release@v2
+              with:
+                  generate_release_notes: true
+
+            - name: Notify Packagist
+              env:
+                  PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+              run: >-
+                  curl -sS -X POST
+                  -H "Content-Type: application/json"
+                  -d '{"repository":{"url":"https://github.com/kaliop/content-decorator-bundle"}}'
+                  "https://packagist.org/api/update-package?username=token&apiToken=${PACKAGIST_TOKEN}"

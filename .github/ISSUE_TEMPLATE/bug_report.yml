@@ -1,0 +1,50 @@
+name: Bug report
+description: Report an unexpected behavior or regression.
+title: "bug: "
+labels:
+    - bug
+body:
+    -   type: markdown
+        attributes:
+            value: |
+                Thanks for reporting a bug. Please provide enough detail to reproduce it.
+    -   type: input
+        id: version
+        attributes:
+            label: Affected bundle version
+            description: For example 1.0.0
+        validations:
+            required: true
+    -   type: input
+        id: ibexa
+        attributes:
+            label: Ibexa version
+            description: For example 4.6.x
+        validations:
+            required: true
+    -   type: input
+        id: php
+        attributes:
+            label: PHP version
+            description: For example 8.1.22
+        validations:
+            required: true
+    -   type: textarea
+        id: description
+        attributes:
+            label: What happened?
+        validations:
+            required: true
+    -   type: textarea
+        id: expected
+        attributes:
+            label: What did you expect to happen?
+        validations:
+            required: true
+    -   type: textarea
+        id: steps
+        attributes:
+            label: Steps to reproduce
+            description: Please include minimal reproducible steps.
+        validations:
+            required: true
