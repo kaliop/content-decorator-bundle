@@ -405,7 +405,6 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
      * @return ContentDecorator[]
      *
      * @throws InvalidArgumentException
-     * @throws ContentDecoratorException
      */
     protected function getRelationListFieldValue(string $field): array
     {
@@ -415,13 +414,25 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof RelationListValue) {
             foreach ($fieldValue->destinationContentIds as $contentId) {
                 try {
-                    $relatedContents[] = $this->repository->getContentService()->loadContent($contentId);
+                    $relatedContent = $this->repository->getContentService()->loadContent($contentId);
+                    // Exclude content in trash, as it will throw ContentDecoratorException for a whole list
+                    if (!$relatedContent->getContentInfo()->isTrashed()) {
+                        $relatedContents[] = $relatedContent;
+                    } else {
+                        $this->logger->error(sprintf('Cannot load related content #%d for field "%s" in content #%d - content is trashed', $contentId, $field, $this->getContent()->getId()));
+                    }
                 } catch (RepositoryException $e) {
                     $this->logger->error(sprintf('Cannot load related content #%d for field "%s" in content #%d - %s', $contentId, $field, $this->getContent()->getId(), $e->getMessage()));
                 }
             }
 
-            return $this->manager->decorateMultiple($relatedContents);
+            try {
+                return $this->manager->decorateMultiple($relatedContents);
+            } catch (ContentDecoratorException $e) {
+                $this->logger->error(sprintf('Cannot decorate related contents for field "%s" in content #%d - %s', $field, $this->getContent()->getId(), $e->getMessage()));
+
+                return [];
+            }
         } else {
             throw new InvalidArgumentException('field', '$field should be an identifier of ezobjectrelationlist field');
         }

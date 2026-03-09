@@ -46,6 +46,7 @@ class ContentDecoratorFactory implements ResetInterface
 
     /**
      * @param Content $content
+     * @param Location|null $location
      *
      * @return ContentDecorator
      *
@@ -65,6 +66,7 @@ class ContentDecoratorFactory implements ResetInterface
 
     /**
      * @param Content $content
+     * @param Location|null $location
      *
      * @return ContentDecorator
      *
@@ -89,6 +91,8 @@ class ContentDecoratorFactory implements ResetInterface
      * @param iterable<Content|Location> $objects
      *
      * @return ContentDecorator[]
+     *
+     * @throws ContentDecoratorException
      */
     public function decorateMultiple(iterable $objects): array
     {
@@ -127,6 +131,10 @@ class ContentDecoratorFactory implements ResetInterface
         return $contentDecorators;
     }
 
+    /**
+     * @throws ContentDecoratorMissingException
+     * @throws ContentDecoratorTrashedException
+     */
     private function initialize(
         Content $content,
         ?Location $location

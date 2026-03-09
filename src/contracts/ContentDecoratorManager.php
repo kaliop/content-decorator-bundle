@@ -14,15 +14,20 @@ use Kaliop\Contracts\ContentDecorator\Repository\RepositoryInterface;
 interface ContentDecoratorManager
 {
     /**
-     * Decorate given Content or Location.
+     * Decorate given Content with an optional Location.
+     * TODO: Supporting Location as a first argument only for BC. To be removed in v2.0.
      *
-     * @param Content|Location $object
+     * @param Content $content
+     * @param Location|null $location
      *
      * @return ContentDecorator
      *
      * @throws ContentDecoratorException
      */
-    public function decorate(Content|Location $object): ContentDecorator;
+    public function decorate(
+        Content|Location $content,
+        ?Location $location = null,
+    ): ContentDecorator;
 
     /**
      * Decorate a given list of Content and/or Location objects.

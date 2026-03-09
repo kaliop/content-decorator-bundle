@@ -28,13 +28,18 @@ class ContentDecoratorManager implements ContentDecoratorManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function decorate(Location|Content $object): ContentDecorator
-    {
-        if ($object instanceof Location) {
-            return $this->decoratorFactory->decorate($object->getContent(), $object);
+    public function decorate(
+        Content|Location $content,
+        ?Location $location = null,
+    ): ContentDecorator {
+        if ($content instanceof Location) {
+            $location = $content;
+            $content = $content->getContent();
+        } else {
+            $location ??= $content->getContentInfo()->getMainLocation();
         }
 
-        return $this->decoratorFactory->decorate($object, null);
+        return $this->decoratorFactory->decorate($content, $location);
     }
 
     /**

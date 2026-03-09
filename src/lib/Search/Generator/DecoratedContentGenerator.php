@@ -68,8 +68,13 @@ class DecoratedContentGenerator
                 if (!in_array($object->id, $lastBatchIds)) {
                     $currentBatchIds[] = $object->id;
 
-                    /** @var T $decoratedContent */
-                    $decoratedContent = $this->manager->decorate($object);
+                    if ($object instanceof Content) {
+                        /** @var T $decoratedContent */
+                        $decoratedContent = $this->manager->decorate($object);
+                    } else {
+                        /** @var T $decoratedContent */
+                        $decoratedContent = $this->manager->decorate($object->getContent(), $object);
+                    }
 
                     yield $decoratedContent;
                 }
