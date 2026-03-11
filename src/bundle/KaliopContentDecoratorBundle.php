@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kaliop\Bundle\ContentDecorator;
 
 use Doctrine\DBAL\Types\Type;
+use Kaliop\Bundle\ContentDecorator\Doctrine\Type\DecoratedContentListType;
 use Kaliop\Bundle\ContentDecorator\Doctrine\Type\DecoratedContentType;
 use Kaliop\Contracts\ContentDecorator\ContentDecoratorManager;
 use Psr\Log\LoggerInterface;
@@ -17,6 +18,9 @@ final class KaliopContentDecoratorBundle extends Bundle
     {
         if (!Type::hasType(DecoratedContentType::TYPE)) {
             Type::addType(DecoratedContentType::TYPE, DecoratedContentType::class);
+        }
+        if (!Type::hasType(DecoratedContentListType::TYPE)) {
+            Type::addType(DecoratedContentListType::TYPE, DecoratedContentListType::class);
         }
     }
 
@@ -34,5 +38,10 @@ final class KaliopContentDecoratorBundle extends Bundle
         $decoratedContentType = Type::getType(DecoratedContentType::TYPE);
         $decoratedContentType->setContentManager($contentManager);
         $decoratedContentType->setLogger($logger);
+
+        /** @var DecoratedContentListType $decoratedContentType */
+        $decoratedContentListType = Type::getType(DecoratedContentListType::TYPE);
+        $decoratedContentListType->setContentManager($contentManager);
+        $decoratedContentListType->setLogger($logger);
     }
 }
