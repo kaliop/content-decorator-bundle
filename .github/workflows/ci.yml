@@ -40,3 +40,13 @@ jobs:
 
             -   name: Run Deptrac
                 run: composer deptrac
+
+            -   name: Notify Packagist
+                env:
+                    PACKAGIST_USERNAME: ${{ secrets.PACKAGIST_USERNAME }}
+                    PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+                run: >-
+                    curl -sS -X POST
+                    -H "Content-Type: application/json"
+                    -d '{"repository":{"url":"https://github.com/kaliop/content-decorator-bundle"}}'
+                    "https://packagist.org/api/update-package?username=${PACKAGIST_USERNAME}&apiToken=${PACKAGIST_TOKEN}"
