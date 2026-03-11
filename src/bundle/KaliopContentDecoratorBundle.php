@@ -39,7 +39,7 @@ final class KaliopContentDecoratorBundle extends Bundle
         $decoratedContentType->setContentManager($contentManager);
         $decoratedContentType->setLogger($logger);
 
-        /** @var DecoratedContentListType $decoratedContentType */
+        /** @var DecoratedContentListType $decoratedContentListType */
         $decoratedContentListType = Type::getType(DecoratedContentListType::TYPE);
         $decoratedContentListType->setContentManager($contentManager);
         $decoratedContentListType->setLogger($logger);
