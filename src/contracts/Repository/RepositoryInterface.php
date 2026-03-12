@@ -18,12 +18,16 @@ interface RepositoryInterface
      *
      * @param Criterion[] $criteria
      * @param SortClause[] $sortClauses
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T|null
      */
     public function findOneBy(
         array $criteria = [],
-        array $sortClauses = []
+        array $sortClauses = [],
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): ?ContentDecorator;
 
     /**
@@ -31,12 +35,16 @@ interface RepositoryInterface
      *
      * @param Criterion[] $criteria
      * @param SortClause[] $sortClauses
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T|null
      */
     public function findOneLocationBy(
         array $criteria = [],
-        array $sortClauses = []
+        array $sortClauses = [],
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): ?ContentDecorator;
 
     /**
@@ -46,6 +54,8 @@ interface RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int|null $offset
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T[]
      */
@@ -53,7 +63,9 @@ interface RepositoryInterface
         array $criteria = [],
         array $sortClauses = [],
         ?int $limit = null,
-        ?int $offset = null
+        ?int $offset = null,
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): array;
 
     /**
@@ -63,6 +75,8 @@ interface RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int|null $offset
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T[]
      */
@@ -70,7 +84,9 @@ interface RepositoryInterface
         array $criteria = [],
         array $sortClauses = [],
         ?int $limit = null,
-        ?int $offset = null
+        ?int $offset = null,
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): array;
 
     /**
@@ -80,6 +96,8 @@ interface RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int $offset
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T[]
      */
@@ -87,16 +105,20 @@ interface RepositoryInterface
         int $parentLocationId,
         array $sortClauses = [],
         ?int $limit = null,
-        int $offset = 0
+        int $offset = 0,
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): array;
 
     /**
-     * Find a visible contents by a given subtree.
+     * Find visible contents by a given subtree.
      *
      * @param string $subtree
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int $offset
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T[]
      */
@@ -104,6 +126,8 @@ interface RepositoryInterface
         string $subtree,
         array $sortClauses = [],
         ?int $limit = null,
-        int $offset = 0
+        int $offset = 0,
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): array;
 }

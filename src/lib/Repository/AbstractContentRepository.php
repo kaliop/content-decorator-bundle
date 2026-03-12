@@ -44,15 +44,19 @@ abstract class AbstractContentRepository implements RepositoryInterface
     /**
      * @param Criterion[] $criteria
      * @param SortClause[] $sortClauses
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T|null
      */
     public function findOneBy(
         array $criteria = [],
-        array $sortClauses = []
+        array $sortClauses = [],
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): ?ContentDecorator {
         /** @var T[] $results */
-        $results = $this->findBy($criteria, $sortClauses, 1);
+        $results = $this->findBy($criteria, $sortClauses, 1, null, $languageFilter, $filterOnUserPermissions);
 
         return $results[0] ?? null;
     }
@@ -60,15 +64,19 @@ abstract class AbstractContentRepository implements RepositoryInterface
     /**
      * @param Criterion[] $criteria
      * @param SortClause[] $sortClauses
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T|null
      */
     public function findOneLocationBy(
         array $criteria = [],
-        array $sortClauses = []
+        array $sortClauses = [],
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): ?ContentDecorator {
         /** @var T[] $results */
-        $results = $this->findLocationsBy($criteria, $sortClauses, 1);
+        $results = $this->findLocationsBy($criteria, $sortClauses, 1, null, $languageFilter, $filterOnUserPermissions);
 
         return $results[0] ?? null;
     }
@@ -78,6 +86,8 @@ abstract class AbstractContentRepository implements RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int|null $offset
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T[]
      */
@@ -85,7 +95,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
         array $criteria = [],
         array $sortClauses = [],
         ?int $limit = null,
-        ?int $offset = null
+        ?int $offset = null,
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): array {
         $query = new Query();
 
@@ -98,7 +110,11 @@ abstract class AbstractContentRepository implements RepositoryInterface
             $query->sortClauses = $sortClauses;
         }
 
-        return $this->findContents($query);
+        return $this->findContents(
+            $query,
+            $languageFilter,
+            $filterOnUserPermissions,
+        );
     }
 
     /**
@@ -106,6 +122,8 @@ abstract class AbstractContentRepository implements RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int|null $offset
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T[]
      */
@@ -113,7 +131,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
         array $criteria = [],
         array $sortClauses = [],
         ?int $limit = null,
-        ?int $offset = null
+        ?int $offset = null,
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): array {
         $query = new LocationQuery();
 
@@ -126,7 +146,7 @@ abstract class AbstractContentRepository implements RepositoryInterface
             $query->sortClauses = $sortClauses;
         }
 
-        return $this->findLocations($query);
+        return $this->findLocations($query, $languageFilter, $filterOnUserPermissions);
     }
 
     /**
@@ -134,6 +154,8 @@ abstract class AbstractContentRepository implements RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int $offset
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T[]
      */
@@ -141,7 +163,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
         int $parentLocationId,
         array $sortClauses = [],
         ?int $limit = null,
-        int $offset = 0
+        int $offset = 0,
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): array {
         if (!$sortClauses) {
             try {
@@ -163,6 +187,8 @@ abstract class AbstractContentRepository implements RepositoryInterface
             $sortClauses,
             $limit,
             $offset,
+            $languageFilter,
+            $filterOnUserPermissions,
         );
     }
 
@@ -171,6 +197,8 @@ abstract class AbstractContentRepository implements RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int $offset
+     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @param bool $filterOnUserPermissions
      *
      * @return T[]
      */
@@ -178,7 +206,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
         string $subtree,
         array $sortClauses = [],
         ?int $limit = null,
-        int $offset = 0
+        int $offset = 0,
+        array $languageFilter = [],
+        bool $filterOnUserPermissions = true,
     ): array {
         return $this->findLocationsBy(
             [
@@ -188,6 +218,8 @@ abstract class AbstractContentRepository implements RepositoryInterface
             $sortClauses,
             $limit,
             $offset,
+            $languageFilter,
+            $filterOnUserPermissions,
         );
     }
 
@@ -233,7 +265,7 @@ abstract class AbstractContentRepository implements RepositoryInterface
     protected function findContents(
         Query $query,
         array $languageFilter = [],
-        bool $filterOnUserPermissions = true
+        bool $filterOnUserPermissions = true,
     ): array {
         return $this->decorateSearchResult(
             $this->repository->getSearchService()->findContent($query, $languageFilter, $filterOnUserPermissions)
