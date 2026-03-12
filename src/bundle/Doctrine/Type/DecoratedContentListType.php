@@ -76,16 +76,18 @@ class DecoratedContentListType extends Type
     ) {
         $contents = [];
 
-        $ids = array_map('intval', explode('|', trim($value, '|')));
-        foreach ($ids as $id) {
-            if (!$id) {
-                continue;
-            }
+        if ($value) {
+            $ids = array_map('intval', explode('|', trim($value, '|')));
+            foreach ($ids as $id) {
+                if (!$id) {
+                    continue;
+                }
 
-            try {
-                $contents[] = $this->contentManager->loadContent($id);
-            } catch (ContentDecoratorException $e) {
-                $this->logger?->warning('Cannot load Decorated Content for Doctrine: ' . $e->getMessage());
+                try {
+                    $contents[] = $this->contentManager->loadContent($id);
+                } catch (ContentDecoratorException $e) {
+                    $this->logger?->warning('Cannot load Decorated Content for Doctrine: ' . $e->getMessage());
+                }
             }
         }
 
