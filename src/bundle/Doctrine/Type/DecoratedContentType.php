@@ -65,8 +65,13 @@ class DecoratedContentType extends Type
         if ($value) {
             try {
                 return $this->contentManager->loadContent($value);
-            } catch (ContentDecoratorException $e) {
-                $this->logger?->warning('Cannot load Decorated Content for Doctrine: ' . $e->getMessage());
+            } catch (ContentDecoratorException) {
+                try {
+                    // Try to load in any language as a fallback
+                    return $this->contentManager->loadContent($value, []);
+                } catch (ContentDecoratorException $e) {
+                    $this->logger?->warning('Cannot load Decorated Content for Doctrine: ' . $e->getMessage());
+                }
             }
         }
 

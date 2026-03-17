@@ -85,8 +85,13 @@ class DecoratedContentListType extends Type
 
                 try {
                     $contents[] = $this->contentManager->loadContent($id);
-                } catch (ContentDecoratorException $e) {
-                    $this->logger?->warning('Cannot load Decorated Content for Doctrine: ' . $e->getMessage());
+                } catch (ContentDecoratorException) {
+                    try {
+                        // Try to load in any language as a fallback
+                        $contents[] = $this->contentManager->loadContent($id, []);
+                    } catch (ContentDecoratorException $e) {
+                        $this->logger?->warning('Cannot load Decorated Content for Doctrine: ' . $e->getMessage());
+                    }
                 }
             }
         }
