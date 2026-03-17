@@ -264,19 +264,24 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
 
     /**
      * @param string $field
+     * @param string[]|null $languages
+     * @param bool $useAlwaysAvailable
      *
      * @return ContentDecorator|null
      *
      * @throws InvalidArgumentException
      */
-    protected function getImageAssetFieldValue(string $field): ?ContentDecorator
-    {
+    protected function getImageAssetFieldValue(
+        string $field,
+        ?array $languages = null,
+        bool $useAlwaysAvailable = true,
+    ): ?ContentDecorator {
         $fieldValue = $this->getContent()->getFieldValue($field);
         if ($fieldValue instanceof ImageAssetValue) {
             $contentId = $fieldValue->destinationContentId;
             if ($contentId) {
                 try {
-                    return $this->manager->loadContent($contentId);
+                    return $this->manager->loadContent($contentId, $languages, null, $useAlwaysAvailable);
                 } catch (ContentDecoratorException $e) {
                     $this->logger->error(sprintf('Cannot load related content #%d for field "%s" in content #%d - %s', $contentId, $field, $this->getContent()->getId(), $e->getMessage()));
                 }
@@ -375,19 +380,24 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
 
     /**
      * @param string $field
+     * @param string[]|null $languages
+     * @param bool $useAlwaysAvailable
      *
      * @return ContentDecorator|null
      *
      * @throws InvalidArgumentException
      */
-    protected function getRelationFieldValue(string $field): ?ContentDecorator
-    {
+    protected function getRelationFieldValue(
+        string $field,
+        ?array $languages = null,
+        bool $useAlwaysAvailable = true,
+    ): ?ContentDecorator {
         $fieldValue = $this->getContent()->getFieldValue($field);
         if ($fieldValue instanceof RelationValue) {
             $contentId = $fieldValue->destinationContentId;
             if ($contentId) {
                 try {
-                    return $this->manager->loadContent($contentId);
+                    return $this->manager->loadContent($contentId, $languages, null, $useAlwaysAvailable);
                 } catch (ContentDecoratorException $e) {
                     $this->logger->error(sprintf('Cannot load related content #%d for field "%s" in content #%d - %s', $contentId, $field, $this->getContent()->getId(), $e->getMessage()));
                 }
@@ -401,20 +411,25 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
 
     /**
      * @param string $field
+     * @param string[]|null $languages
+     * @param bool $useAlwaysAvailable
      *
      * @return ContentDecorator[]
      *
      * @throws InvalidArgumentException
      */
-    protected function getRelationListFieldValue(string $field): array
-    {
+    protected function getRelationListFieldValue(
+        string $field,
+        ?array $languages = null,
+        bool $useAlwaysAvailable = true,
+    ): array {
         $relatedContents = [];
 
         $fieldValue = $this->getContent()->getFieldValue($field);
         if ($fieldValue instanceof RelationListValue) {
             foreach ($fieldValue->destinationContentIds as $contentId) {
                 try {
-                    $relatedContent = $this->repository->getContentService()->loadContent($contentId);
+                    $relatedContent = $this->repository->getContentService()->loadContent($contentId, $languages, null, $useAlwaysAvailable);
                     // Exclude content in trash, as it will throw ContentDecoratorException for a whole list
                     if (!$relatedContent->getContentInfo()->isTrashed()) {
                         $relatedContents[] = $relatedContent;
