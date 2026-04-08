@@ -279,18 +279,18 @@ abstract class AbstractContentRepository implements RepositoryInterface
      */
     protected function decorateSearchResult(SearchResult $searchResult): array
     {
-        $contents = [];
+        $objects = [];
 
         foreach ($searchResult->searchHits as $searchHit) {
             if ($searchHit->valueObject instanceof Content) {
-                $contents[] = $searchHit->valueObject;
+                $objects[] = $searchHit->valueObject;
             } elseif ($searchHit->valueObject instanceof Location) {
-                $contents[] = $searchHit->valueObject->getContent();
+                $objects[] = $searchHit->valueObject;
             }
         }
 
         /** @var T[] $results */
-        $results = $this->manager->decorateMultiple($contents);
+        $results = $this->manager->decorateMultiple($objects);
 
         return $results;
     }
