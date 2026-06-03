@@ -96,7 +96,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof AuthorValue) {
             return $fieldValue->authors;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezauthor field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_author field');
         }
     }
 
@@ -113,7 +113,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof BinaryFileValue) {
             return $fieldValue;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezbinaryfile field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_binaryfile field');
         }
     }
 
@@ -130,7 +130,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof CheckboxValue) {
             return $fieldValue->bool;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezboolean field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_boolean field');
         }
     }
 
@@ -150,7 +150,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
 
             return $countries;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezcountry field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_country field');
         }
     }
 
@@ -167,7 +167,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof DateValue) {
             return $fieldValue->date;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezdate field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_date field');
         }
     }
 
@@ -184,7 +184,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof DateAndTimeValue) {
             return $fieldValue->value;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezdatetime field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_datetime field');
         }
     }
 
@@ -201,7 +201,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof EmailAddressValue) {
             return $fieldValue->email;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezemail field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_email field');
         }
     }
 
@@ -218,7 +218,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof FloatValue) {
             return $fieldValue->value;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezfloat field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_float field');
         }
     }
 
@@ -235,7 +235,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof ImageValue) {
             return $fieldValue;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezimage field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_image field');
         }
     }
 
@@ -259,7 +259,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
             }
         }
 
-        throw new InvalidArgumentException('field', '$field should be an identifier of ezimage field');
+        throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_image field');
     }
 
     /**
@@ -289,7 +289,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
 
             return null;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezobjectrelation field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_objectrelation field');
         }
     }
 
@@ -306,7 +306,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof IntegerValue) {
             return $fieldValue->value;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezinteger field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_integer field');
         }
     }
 
@@ -323,7 +323,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof ISBNValue) {
             return $fieldValue->isbn ?: null;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezisbn field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_isbn field');
         }
     }
 
@@ -340,7 +340,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof KeywordValue) {
             return $fieldValue->values;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezkeyword field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_keyword field');
         }
     }
 
@@ -357,7 +357,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof MapLocationValue) {
             return $fieldValue;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezgmaplocation field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_gmaplocation field');
         }
     }
 
@@ -374,7 +374,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof MediaValue) {
             return $fieldValue;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezmedia field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_media field');
         }
     }
 
@@ -405,7 +405,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
 
             return null;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezobjectrelation field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_objectrelation field');
         }
     }
 
@@ -449,7 +449,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
                 return [];
             }
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezobjectrelationlist field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_objectrelationlist field');
         }
     }
 
@@ -476,7 +476,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
 
             return $values;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezselection field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_selection field');
         }
     }
 
@@ -493,7 +493,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof TextBlockValue) {
             return $fieldValue->text;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of eztext field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_text field');
         }
     }
 
@@ -510,7 +510,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof TextLineValue) {
             return $fieldValue->text;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezstring field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_string field');
         }
     }
 
@@ -527,7 +527,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof TimeValue) {
             return $fieldValue->time;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of eztime field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_time field');
         }
     }
 
@@ -544,7 +544,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof UrlValue) {
             return $fieldValue;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezurl field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_url field');
         }
     }
 
@@ -561,7 +561,7 @@ abstract class AbstractModel extends ContentDecorator implements IbexaRepository
         if ($fieldValue instanceof UserValue) {
             return $fieldValue;
         } else {
-            throw new InvalidArgumentException('field', '$field should be an identifier of ezuser field');
+            throw new InvalidArgumentException('field', '$field should be an identifier of ibexa_user field');
         }
     }
 }

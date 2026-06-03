@@ -61,7 +61,7 @@ services:
 
     Kaliop\ContentDecorator\Injector\ImageVariationInjector:
         arguments:
-            - '@ibexa.field_type.ezimage.variation_service'
+            - '@ibexa.field_type.ibexa_image.variation_service'
         tags:
             - { name: kaliop.content_decorator.injector }
 
