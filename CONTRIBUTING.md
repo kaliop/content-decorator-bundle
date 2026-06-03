@@ -4,8 +4,8 @@ Thanks for contributing to Kaliop Content Decorator Bundle.
 
 ## Scope and Compatibility
 
-- Current major line: `1.x`
-- Supported platform for this line: Ibexa 4.6, Symfony 5.4 LTS, PHP 8.1+
+- Current major line: `2.x`
+- Supported platform for this line: Ibexa 5.0, Symfony 7.4 LTS, PHP 8.3+
 - Keep backward compatibility within a major line
 
 ## Branching Model

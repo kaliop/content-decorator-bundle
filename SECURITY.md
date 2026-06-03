@@ -5,6 +5,7 @@
 The currently supported major line is:
 
 - `1.x` (Ibexa 4.6, Symfony 5.4 LTS)
+- `2.x` (Ibexa 5.0, Symfony 7.4 LTS)
 
 ## Reporting a Vulnerability
 
