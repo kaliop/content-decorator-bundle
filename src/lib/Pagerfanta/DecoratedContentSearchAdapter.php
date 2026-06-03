@@ -17,6 +17,10 @@ use Kaliop\Contracts\ContentDecorator\Model\ContentDecorator;
 /**
  * Pagerfanta adapter for Ibexa content search.
  * Will return results as decorated content objects.
+ *
+ * @phpstan-import-type TSearchLanguageFilter from \Ibexa\Contracts\Core\Repository\SearchService
+ *
+ * @extends AbstractSearchResultAdapter<Content|Location>
  */
 class DecoratedContentSearchAdapter extends AbstractSearchResultAdapter
 {
@@ -29,7 +33,8 @@ class DecoratedContentSearchAdapter extends AbstractSearchResultAdapter
      * @param Query $query
      * @param SearchService $searchService
      * @param ContentDecoratorManager $manager
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      */
     public function __construct(
         Query $query,
@@ -42,16 +47,16 @@ class DecoratedContentSearchAdapter extends AbstractSearchResultAdapter
     }
 
     /**
-     * @param int $offset
-     * @param int $length
+     * @phpstan-param int<0, max> $offset
+     * @phpstan-param int<0, max> $length
      *
      * @return ContentDecorator[]
      *
      * @phpstan-ignore-next-line
      */
     public function getSlice(
-        $offset,
-        $length
+        int $offset,
+        int $length
     ): array {
         $contents = [];
 
@@ -67,7 +72,9 @@ class DecoratedContentSearchAdapter extends AbstractSearchResultAdapter
     }
 
     /**
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
+     * @phpstan-param TSearchLanguageFilter $languageFilter
+     *
+     * @return SearchResult<Content|Location>
      */
     protected function executeQuery(
         SearchService $searchService,
@@ -75,9 +82,15 @@ class DecoratedContentSearchAdapter extends AbstractSearchResultAdapter
         array $languageFilter
     ): SearchResult {
         if ($query instanceof LocationQuery) {
-            return $searchService->findLocations($query, $languageFilter);
-        } else {
-            return $searchService->findContent($query, $languageFilter);
+            /** @var SearchResult<Content|Location> $searchResult */
+            $searchResult = $searchService->findLocations($query, $languageFilter);
+
+            return $searchResult;
         }
+
+        /** @var SearchResult<Content|Location> $searchResult */
+        $searchResult = $searchService->findContent($query, $languageFilter);
+
+        return $searchResult;
     }
 }

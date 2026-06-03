@@ -15,11 +15,13 @@ use Kaliop\Contracts\ContentDecorator\Model\ContentDecorator;
 
 /**
  * @template T of ContentDecorator
+ *
+ * @phpstan-import-type TSearchLanguageFilter from \Ibexa\Contracts\Core\Repository\SearchService
  */
 class DecoratedContentGenerator
 {
     /**
-     * @var SearchResult|null
+     * @var SearchResult<Content|Location>|null
      */
     private ?SearchResult $searchResult = null;
 
@@ -29,7 +31,7 @@ class DecoratedContentGenerator
     private ?int $count = null;
 
     /**
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array{} $languageFilter
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      */
     public function __construct(
         private Query $query,
@@ -124,17 +126,21 @@ class DecoratedContentGenerator
     private function updateSearchResults(): void
     {
         if ($this->query instanceof LocationQuery) {
-            $this->searchResult = $this->searchService->findLocations(
+            /** @var SearchResult<Content|Location> $searchResult */
+            $searchResult = $this->searchService->findLocations(
                 $this->query,
                 $this->languageFilter,
                 $this->filterOnUserPermissions
             );
         } else {
-            $this->searchResult = $this->searchService->findContent(
+            /** @var SearchResult<Content|Location> $searchResult */
+            $searchResult = $this->searchService->findContent(
                 $this->query,
                 $this->languageFilter,
                 $this->filterOnUserPermissions
             );
         }
+
+        $this->searchResult = $searchResult;
     }
 }

@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Kaliop\Contracts\ContentDecorator\Repository;
 
+use Ibexa\Contracts\Core\Repository\SearchService;
 use Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion;
 use Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause;
 use Kaliop\Contracts\ContentDecorator\Model\ContentDecorator;
 
 /**
  * @template T of ContentDecorator
+ *
+ * @phpstan-import-type TSearchLanguageFilter from SearchService
  */
 interface RepositoryInterface
 {
@@ -18,8 +21,9 @@ interface RepositoryInterface
      *
      * @param Criterion[] $criteria
      * @param SortClause[] $sortClauses
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T|null
      */
@@ -35,8 +39,9 @@ interface RepositoryInterface
      *
      * @param Criterion[] $criteria
      * @param SortClause[] $sortClauses
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T|null
      */
@@ -54,8 +59,9 @@ interface RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int|null $offset
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T[]
      */
@@ -75,8 +81,9 @@ interface RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int|null $offset
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T[]
      */
@@ -96,8 +103,9 @@ interface RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int $offset
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T[]
      */
@@ -117,8 +125,9 @@ interface RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int $offset
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T[]
      */

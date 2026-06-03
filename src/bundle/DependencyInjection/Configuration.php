@@ -17,6 +17,8 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('kaliop_content_decorator');
+
+        // @phpstan-ignore-next-line
         $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('mappings')->info('List of directories containing content decorators, indexed by unique name')

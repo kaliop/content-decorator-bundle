@@ -7,11 +7,13 @@ namespace Kaliop\ContentDecorator\Repository;
 use Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException;
 use Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException;
 use Ibexa\Contracts\Core\Repository\Repository;
+use Ibexa\Contracts\Core\Repository\SearchService;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\Content\Location;
 use Ibexa\Contracts\Core\Repository\Values\Content\LocationQuery;
 use Ibexa\Contracts\Core\Repository\Values\Content\Query;
 use Ibexa\Contracts\Core\Repository\Values\Content\Query\Criterion;
+use Ibexa\Contracts\Core\Repository\Values\Content\Query\CriterionInterface;
 use Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause;
 use Ibexa\Contracts\Core\Repository\Values\Content\Search\SearchResult;
 use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
@@ -22,6 +24,8 @@ use Kaliop\Contracts\ContentDecorator\Repository\RepositoryInterface;
 
 /**
  * @template T of ContentDecorator
+ *
+ * @phpstan-import-type TSearchLanguageFilter from SearchService
  *
  * @implements RepositoryInterface<T>
  */
@@ -44,8 +48,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
     /**
      * @param Criterion[] $criteria
      * @param SortClause[] $sortClauses
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T|null
      */
@@ -64,8 +69,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
     /**
      * @param Criterion[] $criteria
      * @param SortClause[] $sortClauses
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T|null
      */
@@ -86,8 +92,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int|null $offset
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T[]
      */
@@ -122,8 +129,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int|null $offset
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T[]
      */
@@ -154,8 +162,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int $offset
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T[]
      */
@@ -197,8 +206,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
      * @param SortClause[] $sortClauses
      * @param int|null $limit
      * @param int $offset
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T[]
      */
@@ -226,9 +236,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
     /**
      * @param Criterion[] $criteria
      *
-     * @return Criterion
+     * @return CriterionInterface
      */
-    protected function getFilters(array $criteria = []): Criterion
+    protected function getFilters(array $criteria = []): CriterionInterface
     {
         $criteria[] = new Criterion\ContentTypeIdentifier($this->contentTypes);
         if (count($criteria) > 1) {
@@ -240,8 +250,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
 
     /**
      * @param LocationQuery $query
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T[]
      */
@@ -257,8 +268,9 @@ abstract class AbstractContentRepository implements RepositoryInterface
 
     /**
      * @param Query $query
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array<void> $languageFilter
      * @param bool $filterOnUserPermissions
+     *
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return T[]
      */
@@ -273,7 +285,7 @@ abstract class AbstractContentRepository implements RepositoryInterface
     }
 
     /**
-     * @param SearchResult $searchResult
+     * @param SearchResult<Content>|SearchResult<Location> $searchResult
      *
      * @return T[]
      */
@@ -296,7 +308,7 @@ abstract class AbstractContentRepository implements RepositoryInterface
     }
 
     /**
-     * @param array{languages: string[], useAlwaysAvailable: bool}|array{} $languageFilter
+     * @phpstan-param TSearchLanguageFilter $languageFilter
      *
      * @return DecoratedContentGenerator<T>
      */
