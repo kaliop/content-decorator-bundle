@@ -20,7 +20,7 @@ use ReflectionClass;
 class RepositoryFactory
 {
     /**
-     * @var RepositoryInterface<ContentDecorator>[]
+     * @var array<class-string<ContentDecorator>, RepositoryInterface<covariant ContentDecorator>>
      */
     private array $repositories = [];
 
@@ -83,11 +83,9 @@ class RepositoryFactory
 
         foreach ($class->getAttributes(Decorator::class) as $attribute) {
             $instance = $attribute->newInstance();
-            if ($instance instanceof Decorator) {
-                $repositoryClass = $instance->repositoryClass;
-                $contentTypes = $instance->contentTypes;
-                break;
-            }
+            $repositoryClass = $instance->repositoryClass;
+            $contentTypes = $instance->contentTypes;
+            break;
         }
 
         if ($repositoryClass) {
@@ -106,15 +104,15 @@ class RepositoryFactory
                 throw new InvalidContentDecoratorRepositoryException(sprintf('Repository "%s" does not implement %s abstraction.', $repositoryClass, AbstractContentRepository::class));
             }
 
-            /** @var RepositoryInterface<T> $repository */
+            /** @var AbstractContentRepository<T> $repository */
             $repository = new $repositoryClass($manager, $this->ibexaRepository, $this->configResolver, $class->getName(), $contentTypes);
         } else {
             $repositoryClass = $this->defaultRepositoryClass;
-            if (!$repositoryClass || !is_subclass_of($repositoryClass, AbstractContentRepository::class)) {
+            if (!$repositoryClass) {
                 throw new InvalidContentDecoratorRepositoryException(sprintf('Default repository "%s" does not implement %s abstraction.', $repositoryClass, AbstractContentRepository::class));
             }
 
-            /** @var RepositoryInterface<T> $repository */
+            /** @var AbstractContentRepository<T> $repository */
             $repository = new $repositoryClass($manager, $this->ibexaRepository, $this->configResolver, $class->getName(), $contentTypes);
         }
 

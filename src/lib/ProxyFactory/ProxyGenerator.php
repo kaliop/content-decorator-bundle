@@ -34,7 +34,7 @@ final class ProxyGenerator
      *
      * @param T $decorator
      *
-     * @return AccessInterceptorInterface<T>
+     * @return AccessInterceptorInterface<T>&T
      */
     public function createProxy(ContentDecorator $decorator): AccessInterceptorInterface
     {
@@ -120,10 +120,6 @@ final class ProxyGenerator
             $signed = $config->getClassSignatureGenerator()->addSignature($proxyClass, $proxyParams);
             $config->getGeneratorStrategy()->generate($signed);
         }
-
-        /** @var callable $autoloader */
-        $autoloader = $config->getProxyAutoloader();
-        spl_autoload_register($autoloader);
     }
 
     /**
