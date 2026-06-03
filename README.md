@@ -12,6 +12,7 @@ Instead of using raw content objects everywhere, you map content types to custom
 | Bundle line | Ibexa | Symfony | PHP    |
 |-------------|-------|---------|--------|
 | 1.x         | 4.6   | 5.4 LTS | >= 8.1 |
+| 2.x         | 5.0   | 7.4 LTS | >= 8.3 |
 
 ## Installation
 
