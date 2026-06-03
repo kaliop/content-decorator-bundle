@@ -33,7 +33,7 @@ class AttributeContentMapper extends AbstractContentIdentifierMapper implements 
                 if (is_subclass_of($className, ContentDecorator::class)) {
                     foreach ($class->getAttributes(Decorator::class) as $attribute) {
                         $instance = $attribute->newInstance();
-                        if ($instance instanceof Decorator && $instance->contentTypes) {
+                        if ($instance->contentTypes) {
                             $this->classes[$className] = $instance->contentTypes;
                             break;
                         }

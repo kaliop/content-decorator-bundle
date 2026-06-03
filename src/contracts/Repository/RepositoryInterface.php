@@ -9,7 +9,7 @@ use Ibexa\Contracts\Core\Repository\Values\Content\Query\SortClause;
 use Kaliop\Contracts\ContentDecorator\Model\ContentDecorator;
 
 /**
- * @template T of ContentDecorator
+ * @template-covariant T of ContentDecorator
  */
 interface RepositoryInterface
 {

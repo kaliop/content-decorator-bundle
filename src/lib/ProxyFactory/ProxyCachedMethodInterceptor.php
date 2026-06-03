@@ -27,11 +27,11 @@ class ProxyCachedMethodInterceptor
      * @return mixed
      */
     public function prefix(
-        AccessInterceptorInterface&ContentDecorator $proxy,
-        ContentDecorator $realInstance,
-        string $method,
-        array $params,
-        bool &$returnEarly
+        ?AccessInterceptorInterface $proxy = null,
+        ?ContentDecorator $realInstance = null,
+        string $method = '',
+        array $params = [],
+        bool &$returnEarly = false
     ): mixed {
         $item = $this->cache->getItem($this->getCacheKey($method, $params));
         if ($item->isHit()) {
@@ -56,12 +56,12 @@ class ProxyCachedMethodInterceptor
      * @return mixed
      */
     public function suffix(
-        AccessInterceptorInterface&ContentDecorator $proxy,
-        ContentDecorator $realInstance,
-        string $method,
-        array $params,
-        mixed $returnValue,
-        bool &$returnEarly
+        ?AccessInterceptorInterface $proxy = null,
+        ?ContentDecorator $realInstance = null,
+        string $method = '',
+        array $params = [],
+        mixed $returnValue = null,
+        bool &$returnEarly = false
     ): mixed {
         $item = $this->cache->getItem($this->getCacheKey($method, $params));
         $item->set($returnValue);

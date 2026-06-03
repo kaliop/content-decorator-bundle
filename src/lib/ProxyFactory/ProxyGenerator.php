@@ -11,7 +11,6 @@ use ProxyManager\Configuration as ProxyConfiguration;
 use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
-use ProxyManager\Proxy\AccessInterceptorInterface;
 use ProxyManager\ProxyGenerator\AccessInterceptorValueHolderGenerator;
 use ProxyManager\Version;
 use ReflectionClass;
@@ -34,9 +33,9 @@ final class ProxyGenerator
      *
      * @param T $decorator
      *
-     * @return AccessInterceptorInterface<T>
+     * @return T
      */
-    public function createProxy(ContentDecorator $decorator): AccessInterceptorInterface
+    public function createProxy(ContentDecorator $decorator): ContentDecorator
     {
         $config = $this->getProxyConfiguration();
         $factory = new AccessInterceptorValueHolderFactory($config);
@@ -55,7 +54,6 @@ final class ProxyGenerator
             $suffix[$name] = $interceptor->suffix(...);
         }
 
-        // @phpstan-ignore-next-line
         return $factory->createProxy($decorator, $prefix, $suffix);
     }
 
@@ -121,9 +119,11 @@ final class ProxyGenerator
             $config->getGeneratorStrategy()->generate($signed);
         }
 
-        /** @var callable $autoloader */
         $autoloader = $config->getProxyAutoloader();
-        spl_autoload_register($autoloader);
+        spl_autoload_register(static function (string $className) use ($autoloader): void {
+            self::ensureClassName($className);
+            $autoloader($className);
+        });
     }
 
     /**
@@ -166,5 +166,15 @@ final class ProxyGenerator
             maxLifetime: $this->cacheLifetime,
             maxItems: $this->maxCacheItems,
         );
+    }
+
+    /**
+     * @phpstan-assert class-string $className
+     */
+    private static function ensureClassName(string $className): void
+    {
+        if (preg_match('/^(?:[A-Za-z_][A-Za-z0-9_]*\\\\)*[A-Za-z_][A-Za-z0-9_]*$/', $className) !== 1) {
+            throw new RuntimeException(sprintf('Invalid proxy class name "%s".', $className));
+        }
     }
 }

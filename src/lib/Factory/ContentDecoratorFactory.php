@@ -82,7 +82,7 @@ class ContentDecoratorFactory implements ResetInterface
         $this->eventDispatcher->dispatch($event);
 
         $key = $this->getCacheKey($content);
-        $this->cache[$key][$location?->id ?? 0] = WeakReference::create($contentDecorator);
+        $this->cache[$key][$location ? $location->id : 0] = WeakReference::create($contentDecorator);
 
         return $contentDecorator;
     }
@@ -120,7 +120,7 @@ class ContentDecoratorFactory implements ResetInterface
             $initializedContents[] = $contentDecorator;
 
             $key = $this->getCacheKey($content);
-            $this->cache[$key][$location?->id ?? 0] = WeakReference::create($contentDecorator);
+            $this->cache[$key][$location ? $location->id : 0] = WeakReference::create($contentDecorator);
 
             $contentDecorators[] = $contentDecorator;
         }
@@ -154,7 +154,6 @@ class ContentDecoratorFactory implements ResetInterface
         $contentDecorator = new $className($content, $location ?? $content->getContentInfo()->getMainLocation());
         $this->injector->injectDependencies($contentDecorator);
 
-        /** @var ContentDecorator $contentDecorator */
         $contentDecorator = $this->proxyFactory->createProxy($contentDecorator);
 
         return $contentDecorator;
@@ -169,15 +168,15 @@ class ContentDecoratorFactory implements ResetInterface
             if (!$location) {
                 // Load with any location if not specified
                 $locationId = array_key_first($this->cache[$key]);
-                if ($locationId !== null && isset($this->cache[$key][$locationId])) {
+                if ($locationId !== null) {
                     /** @var ContentDecorator|null $contentDecorator */
                     $contentDecorator = $this->cache[$key][$locationId]->get();
 
                     return $contentDecorator;
                 }
-            } elseif (isset($this->cache[$key][$location->id ?? 0])) {
+            } elseif (isset($this->cache[$key][$location->id])) {
                 /** @var ContentDecorator|null $contentDecorator */
-                $contentDecorator = $this->cache[$key][$location->id ?? 0]->get();
+                $contentDecorator = $this->cache[$key][$location->id]->get();
 
                 return $contentDecorator;
             }
