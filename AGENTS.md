@@ -15,12 +15,12 @@ Ibexa content objects.
 
 When changing behavior, preserve this layered split.
 
-## Supported Stack (1.x line)
+## Supported Stack
 
 Do not widen platform constraints for this major line without explicit
 maintainer approval.
 
-### 2.x
+### Current version (2.x)
 
 - Ibexa 5.0
 - Symfony 7.4 LTS
